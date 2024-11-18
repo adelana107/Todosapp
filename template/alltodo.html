@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>To-Do List</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>To-Do List</h1>
+        </header>
+
+        <!-- Form for adding a task -->
+        <form method="POST">
+            {% csrf_token %}
+            <div class="add-task">
+                <input type="text" name="task" id="task-input" placeholder="Enter a new task" required>
+                <button id="add-btn" type="submit">Add Task</button>
+            </div>
+        </form>
+
+        <!-- Displaying the list of tasks -->
+        <ul class="task-list">
+            {% for todo in task %}
+                <li class="task-item">
+                    <input type="checkbox" class="task-checkbox">
+                    <span class="task-text">{{ todo.task }}</span>
+
+                    <!-- Edit Button as a link -->
+                    <a href="{% url 'updateItem' todo.id %}" class="edit-btn">Edit</a>
+
+                    <!-- Delete Button as a link -->
+                    <a href="{% url 'deleteItem' todo.id %}" class="delete-btn">Delete</a>
+                </li>
+            {% empty %}
+                <p>No tasks available. Please add a task.</p>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>
